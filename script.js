@@ -1,64 +1,51 @@
-/*========== toggle icon navbar ==========*/
-let menuIcon =document.querySelector('#menu-icon');
-let navbar =document.querySelector('.navbar');
+let menuIcon = document.querySelector('#menu-icon');
+let navbar = document.querySelector('.navbar');
 
 menuIcon.onclick = () => {
-    menuIcon.classList.toggle('bx-x');
-    navbar.classList.toggle('active');
-}
-
-/*========== scroll sections active link ==========*/
-let sections = document.querySelectorAll ('section');
-let navlinks = document.querySelectorAll('header nav a');
-
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top= window.scrollY;
-        let offset= sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
-        
-        if(top >=offset && top < offset + height) {
-            navlinks.forEach(links >= {
-                
-            });
-        };
-    });
-    /*========== sticky navbar ============*/
-    let header =document.querySelector('header');
-
-    header.classList.toggle('sticky',window.scrollY > 100);
-
-    /*==========remove toggle icon and navbar when click navbar link (scroll)============*/
-    menuIcon.classList.remove('bx-x');
-    navbar.classList.remove('active');
-
+  menuIcon.classList.toggle('fa-times'); // toggle menu icon
+  navbar.classList.toggle('active');     // show/hide menu
 };
 
- /*============== scroll reveal ===============*/
- ScrollReveal({ 
-    reset: true,
-    distance: '80px',
-    duration: 2000,
-    delay: 200
+// Close menu when clicking a link
+document.querySelectorAll('.navbar a').forEach(link => {
+  link.onclick = () => {
+    menuIcon.classList.remove('fa-times');
+    navbar.classList.remove('active');
+  };
+});
+
+// Smooth scroll
+document.querySelectorAll(".navbar a").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute("href").substring(1);
+    const targetSection = document.getElementById(targetId);
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
+});
 
-  ScrollReveal().reveal('.home-content, .heading', { origin: 'top'});
-  ScrollReveal().reveal('.home-img, .services-container, .portfolio-box, .contact form', { origin: 'bottom'});
-  ScrollReveal().reveal('.home-content h1, .about-img', { origin: 'bottom'});
-  ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right'});
+// Active section highlight
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+  let scrollY = window.pageYOffset;
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 80;
+    const sectionHeight = section.offsetHeight;
+    const sectionId = section.getAttribute("id");
 
+    const navLink = document.querySelector(".navbar a[href*=" + sectionId + "]");
+    if (!navLink) return;
 
-  /*============== typed js ===============*/
-  const typed = new Typed('.multiple-text',{
-    strings: ['Frontend Developer', 'YouTuber', 'Blogger'],
-    typeSpeed: 100,
-    backSpeed: 100,
-    typeDelay: 1000,
-    loop: true
-  })
+    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+      navLink.classList.add("active");
+    } else {
+      navLink.classList.remove("active");
+    }
+  });
+});
 
-  
 
 
 
